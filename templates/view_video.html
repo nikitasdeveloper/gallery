@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>{{ video.video }}</h2>
+  <p>Uploaded by {{ video.user }} on {{ video.upload_date }}</p>
+  <video width="400" controls>
+    <source src="{{ video.video.url }}" type="{{ video.video.content_type }}">
+    Your browser does not support HTML video.
+  </video>
+  {% if request.user == video.user %}
+    <form method="post" action="{% url 'delete_video' video.id %}">
+      {% csrf_token %}
+      <button type="submit">Delete Video</button>
+    </form>
+  {% endif %}
+{% endblock %}

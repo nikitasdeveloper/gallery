@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<center>
+  <h2 class="text-primary">--------Gallery---------</h2><br>
+  {% if photos %}
+    <h3 class="text-dark bg-warning">Photos</h3><br>
+    <ul>
+      {% for photo in photos %}
+      <img src="{{ photo.image.url }}" alt="{{ photo.title }}" style="width: 300px; height: 300px;">
+        <li> uploaded by {{ user.username }} on {{ photo.uploaded_at }}</li><br>
+      {% if user.is_authenticated and user == photo.uploader%}
+            <form method="post" action="{% url 'delete_photo' photo.pk %}">
+              {% csrf_token %}
+              <button type="submit">Delete</button>
+            </form>
+          {% endif %}
+      {% endfor %}
+    </ul><br>
+  {% endif %}
+ {% if videos %}
+  <h3 class="text-dark bg-warning">Videos</h3>
+  <ul>
+    {% for video in videos %}<br>
+      <li>uploaded by {{ user.username }} on {{ video.uploaded_at }}</li>
+      <li>
+        <video width="320" height="240" controls>
+          <source src="{{ video.video.url }}" type="video/mp4">
+        </video>
+        {% if user.is_authenticated and user == video.uploader %}
+            <form method="post" action="{% url 'delete_video' video.pk %}"><br>
+              {% csrf_token %}
+              <button type="submit">Delete</button>
+            </form>
+          {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+{% endif %}
+</center>
+{% endblock %}

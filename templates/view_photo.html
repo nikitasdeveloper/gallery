@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>{{ photo.image }}</h2>
+  <p>Uploaded by {{ photo.user }} on {{ photo.upload_date }}</p>
+  <img src="{{ photo.image.url }}" alt="{{ photo.image.name }}">
+  {% if request.user == photo.user %}
+    <form method="post" action="{% url 'delete_photo' photo.id %}">
+      {% csrf_token %}
+      <button type="submit">Delete Photo</button>
+    </form>
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<center><br>
+<h1 style="color: red;border-style: dashed; background-color:yellow;">PROFILE</h1><br>
+  <h2 style="color: purple">Welcome, {{ user.username }}!</h2><br>
+
+  {% if photos %}
+    <h3 style="color:blue">{{ user.username }} Photos</h3>
+    <ul>
+      {% for photo in photos %}
+        <li><img src="{{ photo.image.url }}" alt="{{ photo.title }}">
+         {% if user.is_authenticated and user == photo.uploader%}
+            <form method="post" action="{% url 'delete_photo' photo.pk %}">
+              {% csrf_token %}
+              <button type="submit">Delete</button>
+            </form>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+  {% if videos %}
+    <h3>Videos</h3>
+    <ul>
+      {% for video in videos %}
+        <li><video controls><source src="{{ video.video.url }}" type="{{ video.video.content_type }}"></video>
+        {% if user.is_authenticated and user == video.uploader %}
+            <form method="post" action="{% url 'delete_video' video.pk %}">
+              {% csrf_token %}
+              <button type="submit">Delete</button>
+            </form>
+          {% endif %}
+        </li>
+
+      {% endfor %}
+    </ul>
+  {% endif %}
+  </center>
+{% endblock %}

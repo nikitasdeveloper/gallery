@@ -72,7 +72,7 @@ def view_photo(request, photo_id):
 def view_video(request, video_id):
     video = get_object_or_404(Video, id=video_id)
     return render(request, 'view_video.html', {'video': video})
-
+# delete view
 @login_required
 def delete_photo(request, photo_id):
     photo = get_object_or_404(Photo, id=photo_id)
